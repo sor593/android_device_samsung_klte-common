@@ -30,6 +30,8 @@ import init.target.rc
 import init.carrier.rc
 
 on early-init
+    export LD_SHIM_LIBS /system/lib/libril.so|libshim_ril.so
+
     mount debugfs debugfs /sys/kernel/debug
     chmod 0755 /sys/kernel/debug
 
@@ -47,7 +49,6 @@ on early-init
     symlink /data/tombstones /tombstones
 
 on init
-    export LD_SHIM_LIBS /system/lib/hw/camera.vendor.msm8974.so|libshim_camera.so
 
     # Support legacy paths
     symlink /sdcard /storage/sdcard0
@@ -56,6 +57,7 @@ on init
 
 on fs
     mount_all fstab.qcom
+    write /proc/sys/vm/swappiness 100
     swapon_all fstab.qcom
 
     restorecon_recursive /efs
@@ -949,6 +951,15 @@ service macloader /system/bin/macloader
     class late_start
     oneshot
     seclabel u:r:macloader:s0
+
+service ril-daemon /system/bin/rild
+    class main
+    socket rild stream 660 root radio
+    socket sap_uim_socket1 stream 660 bluetooth bluetooth
+    socket rild-debug stream 660 radio system
+    socket rild-cas stream 660 casdrm mmb
+    user root
+    group radio cache inet misc audio log system wakelock qcom_diag
 
 on property:wlan.driver.status=ok
     start macloader
