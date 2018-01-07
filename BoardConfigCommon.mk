@@ -28,18 +28,13 @@ TARGET_BOOTLOADER_BOARD_NAME := MSM8974
 
 # Kernel
 BOARD_KERNEL_BASE := 0x00000000
-BOARD_KERNEL_CMDLINE := console=null androidboot.hardware=qcom user_debug=31 msm_rtb.filter=0x37 ehci-hcd.park=3 zcache.enabled=1 zcache.compressor=lz4 androidboot.selinux=permissive
+BOARD_KERNEL_CMDLINE := console=null androidboot.hardware=qcom user_debug=31 msm_rtb.filter=0x37 ehci-hcd.park=3 zcache.enabled=1 zcache.compressor=lz4 androidboot.bootdevice=msm_sdcc.1 androidboot.selinux=permissive
 BOARD_KERNEL_PAGESIZE := 2048
 BOARD_KERNEL_SEPARATED_DT := true
 BOARD_MKBOOTIMG_ARGS := --ramdisk_offset 0x02000000 --tags_offset 0x01e00000
 BOARD_CUSTOM_BOOTIMG := true
 BOARD_CUSTOM_BOOTIMG_MK := hardware/samsung/mkbootimg.mk
-TARGET_KERNEL_CONFIG := msm8974_sec_defconfig
-TARGET_KERNEL_SELINUX_CONFIG := selinux_defconfig
-TARGET_KERNEL_SOURCE := kernel/samsung/klte
-TARGET_KERNEL_HAVE_EXFAT := true
-TARGET_KERNEL_CROSS_COMPILE_PREFIX := arm-linux-androideabi-
-
+TARGET_KERNEL_SOURCE := kernel/samsung/msm8974
 
 # Audio
 BOARD_HAVE_NEW_QCOM_CSDCLIENT := true
@@ -58,21 +53,30 @@ USE_DEVICE_SPECIFIC_CAMERA := true
 # CMHW
 BOARD_HARDWARE_CLASS += $(LOCAL_PATH)/cmhw
 
+# Extended Filesystem Support
+TARGET_KERNEL_HAVE_EXFAT := true
+
 # Legacy BLOB Support
 TARGET_NEEDS_PLATFORM_TEXT_RELOCATIONS := true
 
 # Partitions
+BOARD_BOOTIMAGE_PARTITION_SIZE := 13631488
+BOARD_CACHEIMAGE_PARTITION_SIZE := 157286400
+BOARD_RECOVERYIMAGE_PARTITION_SIZE := 15728640
+BOARD_SYSTEMIMAGE_PARTITION_SIZE := 2411724800
+BOARD_USERDATAIMAGE_PARTITION_SIZE := 2411724800
+BOARD_CACHEIMAGE_FILE_SYSTEM_TYPE := f2fs
 BOARD_FLASH_BLOCK_SIZE := 131072
 TARGET_USERIMAGES_USE_EXT4 := true
 TARGET_USERIMAGES_USE_F2FS := true
-BOARD_CACHEIMAGE_FILE_SYSTEM_TYPE := f2fs
 
 # Power HAL
 TARGET_POWERHAL_SET_INTERACTIVE_EXT := $(LOCAL_PATH)/power/power_ext.c
 TARGET_POWERHAL_VARIANT := qcom
 
 # Radio
-BOARD_RIL_CLASS := ../../../device/samsung/klte-common/ril
+BOARD_PROVIDES_LIBRIL := true
+TARGET_RIL_VARIANT := caf
 
 # Recovery
 BOARD_CUSTOM_RECOVERY_KEYMAPPING := ../../device/samsung/klte-common/recovery/recovery_keys.c
@@ -112,33 +116,6 @@ WIFI_DRIVER_MODULE_AP_ARG   := "firmware_path=/system/etc/wifi/bcmdhd_apsta.bin 
 WIFI_DRIVER_FW_PATH_PARAM   := "/sys/module/dhd/parameters/firmware_path"
 WIFI_DRIVER_FW_PATH_STA     := "/system/etc/wifi/bcmdhd_sta.bin"
 WIFI_DRIVER_FW_PATH_AP      := "/system/etc/wifi/bcmdhd_apsta.bin"
-
-# TWRP
-#ifeq ($(TARGET_RECOVERY),twrp)
-#DEVICE_RESOLUTION := 1080x1920
-#RECOVERY_GRAPHICS_USE_LINELENGTH := true
-#RECOVERY_SDCARD_ON_DATA := true
-#BOARD_HAS_NO_REAL_SDCARD := true
-#TW_THEME := portrait_hdpi
-#TW_INTERNAL_STORAGE_PATH := "/data/media/0"
-#TW_INTERNAL_STORAGE_MOUNT_POINT := "data"
-#TW_EXTERNAL_STORAGE_PATH := "/external_sd"
-#TW_EXTERNAL_STORAGE_MOUNT_POINT := "external_sd"
-#TW_NO_REBOOT_BOOTLOADER := true
-#TW_HAS_DOWNLOAD_MODE := true
-#TW_EXTRA_LANGUAGES := true
-#TW_INCLUDE_CRYPTO := true
-#TW_INCLUDE_CRYPTO_SAMSUNG := true
-#TW_CRYPTO_FS_TYPE := "ext4"
-#TW_CRYPTO_REAL_BLKDEV := "/dev/block/mmcblk0p26"
-#TW_CRYPTO_MNT_POINT := "/data"
-#TW_CRYPTO_FS_OPTIONS := "nosuid,nodev,noatime,noauto_da_alloc,discard,journal_async_commit,errors=panic      wait,check,encryptable=footer"
-#TW_CRYPTO_FS_FLAGS := "0x00000406"
-#TW_CRYPTO_KEY_LOC := "footer"
-#TW_BRIGHTNESS_PATH := /sys/class/leds/lcd-backlight/brightness
-#TARGET_USE_CUSTOM_LUN_FILE_PATH := /sys/devices/msm_dwc3/f9200000.dwc3/gadget/lun0/file
-#TW_TARGET_RECOVERY_FSTAB := ../../../device/samsung/klte-common/twrp.fstab
-#endif
 
 # inherit from the proprietary version
 -include vendor/samsung/klte-common/BoardConfigVendor.mk
