@@ -34,8 +34,6 @@ ro.qc.sdk.izat.premium_enabled=0
 ro.qc.sdk.izat.service_mask=0x0
 
 # Media
-media.stagefright.legacyencoder=true
-media.stagefright.less-secure=true
 persist.media.treble_omx=false
 
 # NFC
@@ -60,6 +58,9 @@ debug.sensors=1
 
 # Tethering
 net.tethering.noprovisioning=true
+
+# Vendor security patch level
+ro.lineage.build.vendor_security_patch=2017-08-01
 
 # WiFi
 wifi.interface=wlan0
