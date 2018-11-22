@@ -21,7 +21,6 @@ COMMON_PATH := device/samsung/klte-common
 TARGET_SPECIFIC_HEADER_PATH := $(COMMON_PATH)/include
 
 # Audio
-BOARD_HAVE_NEW_QCOM_CSDCLIENT := true
 USE_CUSTOM_AUDIO_POLICY := 1
 
 # Bluetooth
@@ -32,9 +31,6 @@ BOARD_HAVE_SAMSUNG_BLUETOOTH := true
 
 # Bootloader
 TARGET_BOOTLOADER_BOARD_NAME := MSM8974
-
-# Camera
-USE_DEVICE_SPECIFIC_CAMERA := true
 
 # Extended Filesystem Support
 TARGET_EXFAT_DRIVER := sdfat
@@ -64,6 +60,10 @@ TARGET_KERNEL_SOURCE := kernel/samsung/msm8974
 TARGET_NEEDS_PLATFORM_TEXT_RELOCATIONS := true
 TARGET_LD_SHIM_LIBS += \
     /system/vendor/lib/hw/camera.vendor.msm8974.so|libshim_camera.so
+TARGET_PROCESS_SDK_VERSION_OVERRIDE += \
+    /system/bin/mediaserver=22 \
+    /system/vendor/bin/mm-qcamera-daemon=22 \
+    /system/vendor/bin/hw/rild=27
 
 # Partitions
 BOARD_BOOTIMAGE_PARTITION_SIZE := 13631488
