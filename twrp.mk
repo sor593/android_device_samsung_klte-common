@@ -28,3 +28,6 @@ TW_NO_EXFAT_FUSE := true
 TW_NO_LEGACY_PROPS := true
 TW_NO_REBOOT_BOOTLOADER := true
 TW_THEME := portrait_hdpi
+TW_USE_TOOLBOX := true
+TW_USE_TOYBOX := true
+TW_EXCLUDE_SUPERSU := true
